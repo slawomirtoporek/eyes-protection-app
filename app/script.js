@@ -31,6 +31,7 @@ const App = () => {
     setTimer(setInterval(() => {
       setTime(prevValue => {
         if (prevValue <= 0) {
+          playSound();
           setStatus(prevStatus => prevStatus === 'work' ? 'rest' : 'work');
         } else {
             return prevValue - 1;
@@ -46,6 +47,11 @@ const App = () => {
   const closeApp = () => {
     window.close();
   };
+
+  const playSound = () => {
+    const sound = new Audio('./sounds/bell.wav');
+    sound.play();
+  }
 
   return (
     <div>
