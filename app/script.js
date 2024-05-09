@@ -1,11 +1,16 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { render } from 'react-dom';
 
 const App = () => {
 
   const [status, setStatus] = useState('off');
-  const [time, setTime] = useState(1200); // seconds
+  const [time, setTime] = useState(); // seconds
   const [timer, setTimer] = useState(null);
+
+  useEffect(() => {
+    if(status === 'work') setTime(1200);
+    if(status === 'rest') setTime(20);
+  }, [status]);
 
   const padTo2Digits = num => {
     return num.toString().padStart(2, '0');
@@ -22,10 +27,15 @@ const App = () => {
   }, [time]);
   
   const startTimer = () => {
-    setTime(1200);
     setStatus('work');
     setTimer(setInterval(() => {
-      setTime(time => time - 1);
+      setTime(prevValue => {
+        if (prevValue <= 0) {
+          setStatus(prevStatus => prevStatus === 'work' ? 'rest' : 'work');
+        } else {
+            return prevValue - 1;
+        };
+      });
     }, 1000));
   };
 
