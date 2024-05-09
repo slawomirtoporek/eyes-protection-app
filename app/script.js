@@ -39,6 +39,14 @@ const App = () => {
     }, 1000));
   };
 
+  const stopTimer = () => {
+    setStatus('off');
+  };
+
+  const closeApp = () => {
+    window.close();
+  };
+
   return (
     <div>
       <h1>Protect your eyes</h1>
@@ -63,9 +71,9 @@ const App = () => {
         <button className="btn" onClick={startTimer}>Start</button>
       ) : ''} 
       {status !== 'off' ? (
-        <button className="btn">Stop</button>
+        <button className="btn" onClick={stopTimer}>Stop</button>
       ) : ''}
-      <button className="btn btn-close">X</button>
+      <button className="btn btn-close" onClick={closeApp}>X</button>
     </div>
   )
 };
