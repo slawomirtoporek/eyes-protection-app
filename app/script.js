@@ -1,11 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { render } from 'react-dom';
 
 const App = () => {
 
-  const [status, setStatus] = useState('rest');
+  const [status, setStatus] = useState('off');
   const [time, setTime] = useState(1200); // seconds
   const [timer, setTimer] = useState(null);
+
+  const padTo2Digits = num => {
+    return num.toString().padStart(2, '0');
+  };
+
+  const formatTime = useMemo(() => {
+    const formatedTimer = sec => {
+      const min = Math.floor(sec / 60);
+      sec = sec % 60;
+      return `${padTo2Digits(min)}:${padTo2Digits(sec)}`;
+    };
+
+    return formatedTimer(time);
+  }, [time]);
+  
+  const startTimer = () => {
+    setTime(1200);
+    setStatus('work');
+    setTimer(setInterval(() => {
+      setTime(time => time - 1);
+    }, 1000));
+  };
 
   return (
     <div>
@@ -24,11 +46,11 @@ const App = () => {
       ) : ''}
       {status !== 'off' ? (
         <div className="timer">
-          18:23
+          {formatTime}
         </div>
       ) : ''}
       {status === 'off' ? (
-        <button className="btn">Start</button>
+        <button className="btn" onClick={startTimer}>Start</button>
       ) : ''} 
       {status !== 'off' ? (
         <button className="btn">Stop</button>
